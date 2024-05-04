@@ -7,10 +7,10 @@ import numpy as np
 import pandas as pd
 import yaml
 
-from datax8 import CustomDataset
-from model3d import ResUnet, Discriminator
+from data import CustomDataset
+from model import ResUnet, Discriminator
 import torch.nn.functional as F
-###Base model training for GAN and NoGAN
+
 with open('config.yaml', 'r') as f:
     configs = yaml.safe_load(f)
 
@@ -132,9 +132,9 @@ def train_model(model, disc, n_epochs, num_timesteps, train_loader, val_loader, 
 
                 disc_optimizer.zero_grad()
 
-                # t = torch.randint(0, 60, (hr_slice.size(0),), device=device)
-                # t = 10*t
-                t = torch.randint(0, num_timesteps, (hr_slice.size(0),), device=device)
+                t = torch.randint(0, 60, (hr_slice.size(0),), device=device)
+                t = 10*t
+                #t = torch.randint(0, num_timesteps, (hr_slice.size(0),), device=device)
 
                 #x_t
                 noisy_pred = q_sample(sr_slice, t)
@@ -150,11 +150,9 @@ def train_model(model, disc, n_epochs, num_timesteps, train_loader, val_loader, 
                 #train generator
                 model_optimizer.zero_grad()
                 sr_slice = model(lr_slice)
-                #noisy_pred = q_sample(sr_slice, t)
-                # disc_sr = disc(noisy_pred, t)
+                noisy_pred = q_sample(sr_slice, t)
+                disc_sr = disc(noisy_pred, t)
 
-                # adversarial_loss = criterion_Disc(disc_sr, torch.ones_like(disc_sr).to(device))
-                disc_sr = disc(sr_slice, t)
                 adversarial_loss = criterion_Disc(disc_sr, torch.ones_like(disc_sr).to(device))
 
                 g_loss = gen_loss(sr_slice, hr_slice, adversarial_loss, criterion)

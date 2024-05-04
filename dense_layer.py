@@ -1,17 +1,3 @@
-# ---------------------------------------------------------------
-# Copyright (c) 2022, NVIDIA CORPORATION. All rights reserved.
-#
-# This file has been modified from a file released under the MIT License.
-#
-# Source:
-# https://github.com/CW-Huang/sdeflow-light/blob/524650bc5ad69522b3e0905672deef0650374512/lib/models/unet.py
-#
-# The license for the original version of this file can be
-# found in this directory (LICENSE_MIT). The modifications
-# to this file are subject to the same MIT License.
-# ---------------------------------------------------------------
-
-
 import math
 import torch
 import torch.nn as nn
